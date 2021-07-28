@@ -34,7 +34,7 @@ You can inspect the availabe endpoints for the Twin API Api through Swagger. Ple
 
 ## Contribute
 
-Please report any bugs / issues that you find, thank you!
+Please report any bugs / issues that you find, thank you! 
 
 ---
 
