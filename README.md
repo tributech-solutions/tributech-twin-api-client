@@ -1,11 +1,11 @@
-# Tributech DataSpace Kit Catalog API client
+# Tributech DataSpace Kit Twin API client
 
-This repository contains the Catalog API client for easy access to the catalog-api of the Tributech DataSpace Kit.
+This repository contains the Twin API client for easy access to the twin-api of the Tributech DataSpace Kit.
 
 
 ## Integration via API
 
-The client can be used to connect an application to the catalog api of the Tributech Dataspace Kit endpoints.
+The client can be used to connect an application to the twin api of the Tributech Dataspace Kit endpoints.
 
 
 ### Authentication / Authorization
@@ -18,7 +18,7 @@ Essentially, you will need to provide the following parameters:
 | Parameter | Value | Remark |
 |-|-|-|
 | tokenUrl | https://auth.your-hub.dataspace-hub.com/auth/realms/your-node/protocol/openid-connect/token | Url to retrieve the access token from the dataspace hub Keycloak Server |
-| scope | profile / email / catalog-api / node-id | Defines the scope of what can be accessed |
+| scope | profile / email / twin-api / node-id | Defines the scope of what can be accessed |
 | clientId | your-api-specific-client-id | Can be found in the Dataspace Admin (Profile -> Administration)
 | clientSecret | your-api-specific-client-secret | Can be found in the Dataspace Admin (Profile -> Administration)
 
@@ -28,7 +28,7 @@ Essentially, you will need to provide the following parameters:
 
 Usage examples for the clients are available in [/examples](./examples).
 
-You can inspect the availabe endpoints for the Catalog API Api through Swagger. Please follow the guide on [docs.tributech.io](https://docs.tributech.io/docs/integration/node/swagger-ui-authorization).
+You can inspect the availabe endpoints for the Twin API Api through Swagger. Please follow the guide on [docs.tributech.io](https://docs.tributech.io/docs/integration/node/swagger-ui-authorization).
 
 ---
 
