@@ -47,9 +47,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The twin graph.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TwinGraph> GraphPUTAsync(TwinGraphFile body)
+        public System.Threading.Tasks.Task<TwinGraph> UpsertTwinGraphAsync(TwinGraphFile body)
         {
-            return GraphPUTAsync(body, System.Threading.CancellationToken.None);
+            return UpsertTwinGraphAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -57,7 +57,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The twin graph.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TwinGraph> GraphPUTAsync(TwinGraphFile body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TwinGraph> UpsertTwinGraphAsync(TwinGraphFile body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("graph");
@@ -144,108 +144,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
             }
         }
     
-        /// <summary>Upsert digital twin graph.</summary>
-        /// <param name="body">The twin graph.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TwinGraph> GraphPOSTAsync(TwinGraphFile body)
-        {
-            return GraphPOSTAsync(body, System.Threading.CancellationToken.None);
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Upsert digital twin graph.</summary>
-        /// <param name="body">The twin graph.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TwinGraph> GraphPOSTAsync(TwinGraphFile body, System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("graph");
-    
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-    
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-    
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ProblemDetails>("Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<TwinGraph>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ValidationProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new ApiException<ValidationProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Query digital twins and relationships using cypher query.</summary>
+        /// <summary>Query digital twin graph using cypher query.</summary>
         /// <param name="match">Cypher query &lt;a href="https://neo4j.com/docs/cypher-manual/current/clauses/match/" target="_blank"&gt;MATCH&lt;/a&gt; part.
         /// <br/>e.g. "(twin:Twin)", "(stream:Twin:BaseStreamTributechIoV1)", "(stream:Twin:BaseStreamTributechIoV1)-[relationship:Options]-&gt;(option:Twin:BaseOptionsTributechIoV1)",...</param>
         /// <param name="where">(Optional) Cypher query &lt;a href="https://neo4j.com/docs/cypher-manual/current/clauses/where/" target="_blank"&gt;WHERE&lt;/a&gt; part.
@@ -256,13 +155,13 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <br/>e.g. "stream AS nodes, [] AS nodes", "collect(distinct stream) + collect(distinct option) AS nodes, collect(relationship) AS relationships"),...</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TwinGraph> CypherAsync(string match, string where, string with)
+        public System.Threading.Tasks.Task<TwinGraph> GetTwinGraphByCypherQueryAsync(string match, string where, string with)
         {
-            return CypherAsync(match, where, with, System.Threading.CancellationToken.None);
+            return GetTwinGraphByCypherQueryAsync(match, where, with, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Query digital twins and relationships using cypher query.</summary>
+        /// <summary>Query digital twin graph using cypher query.</summary>
         /// <param name="match">Cypher query &lt;a href="https://neo4j.com/docs/cypher-manual/current/clauses/match/" target="_blank"&gt;MATCH&lt;/a&gt; part.
         /// <br/>e.g. "(twin:Twin)", "(stream:Twin:BaseStreamTributechIoV1)", "(stream:Twin:BaseStreamTributechIoV1)-[relationship:Options]-&gt;(option:Twin:BaseOptionsTributechIoV1)",...</param>
         /// <param name="where">(Optional) Cypher query &lt;a href="https://neo4j.com/docs/cypher-manual/current/clauses/where/" target="_blank"&gt;WHERE&lt;/a&gt; part.
@@ -273,7 +172,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <br/>e.g. "stream AS nodes, [] AS nodes", "collect(distinct stream) + collect(distinct option) AS nodes, collect(relationship) AS relationships"),...</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TwinGraph> CypherAsync(string match, string where, string with, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TwinGraph> GetTwinGraphByCypherQueryAsync(string match, string where, string with, System.Threading.CancellationToken cancellationToken)
         {
             if (match == null)
                 throw new System.ArgumentNullException("match");
@@ -365,9 +264,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The graph query</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TwinGraph> SubgraphAsync(TwinGraphQuery body)
+        public System.Threading.Tasks.Task<TwinGraph> GetTwinGraphByQueryAsync(TwinGraphQuery body)
         {
-            return SubgraphAsync(body, System.Threading.CancellationToken.None);
+            return GetTwinGraphByQueryAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -375,7 +274,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The graph query</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TwinGraph> SubgraphAsync(TwinGraphQuery body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TwinGraph> GetTwinGraphByQueryAsync(TwinGraphQuery body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("query/subgraph");
@@ -456,9 +355,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtId">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> OutgoingAsync(System.Guid dtId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> GetOutgoingRelationshipsAsync(System.Guid dtId)
         {
-            return OutgoingAsync(dtId, System.Threading.CancellationToken.None);
+            return GetOutgoingRelationshipsAsync(dtId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -466,7 +365,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtId">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> OutgoingAsync(System.Guid dtId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> GetOutgoingRelationshipsAsync(System.Guid dtId, System.Threading.CancellationToken cancellationToken)
         {
             if (dtId == null)
                 throw new System.ArgumentNullException("dtId");
@@ -548,9 +447,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtId">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> IncomingAsync(System.Guid dtId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> GetIncomingRelationshipsAsync(System.Guid dtId)
         {
-            return IncomingAsync(dtId, System.Threading.CancellationToken.None);
+            return GetIncomingRelationshipsAsync(dtId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -558,7 +457,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtId">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> IncomingAsync(System.Guid dtId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Relationship>> GetIncomingRelationshipsAsync(System.Guid dtId, System.Threading.CancellationToken cancellationToken)
         {
             if (dtId == null)
                 throw new System.ArgumentNullException("dtId");
@@ -641,9 +540,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<RelationshipPaginatedResponse> RelationshipsGETAsync(int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<RelationshipPaginatedResponse> GetAllRelationshipsAsync(int? pageNumber, int? pageSize)
         {
-            return RelationshipsGETAsync(pageNumber, pageSize, System.Threading.CancellationToken.None);
+            return GetAllRelationshipsAsync(pageNumber, pageSize, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -652,7 +551,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<RelationshipPaginatedResponse> RelationshipsGETAsync(int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<RelationshipPaginatedResponse> GetAllRelationshipsAsync(int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("relationships?");
@@ -740,9 +639,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The relationship.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Relationship> RelationshipsPOSTAsync(Relationship body)
+        public System.Threading.Tasks.Task<Relationship> CreateRelationshipAsync(Relationship body)
         {
-            return RelationshipsPOSTAsync(body, System.Threading.CancellationToken.None);
+            return CreateRelationshipAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -751,7 +650,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The relationship.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Relationship> RelationshipsPOSTAsync(Relationship body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Relationship> CreateRelationshipAsync(Relationship body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("relationships");
@@ -842,9 +741,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="relationshipId">The relationship identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Relationship> RelationshipsGET2Async(System.Guid relationshipId)
+        public System.Threading.Tasks.Task<Relationship> GetRelationshipByIdAsync(System.Guid relationshipId)
         {
-            return RelationshipsGET2Async(relationshipId, System.Threading.CancellationToken.None);
+            return GetRelationshipByIdAsync(relationshipId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -852,7 +751,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="relationshipId">The relationship identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Relationship> RelationshipsGET2Async(System.Guid relationshipId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Relationship> GetRelationshipByIdAsync(System.Guid relationshipId, System.Threading.CancellationToken cancellationToken)
         {
             if (relationshipId == null)
                 throw new System.ArgumentNullException("relationshipId");
@@ -946,9 +845,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The relationship.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Relationship> RelationshipsPUTAsync(System.Guid relationshipId, Relationship body)
+        public System.Threading.Tasks.Task<Relationship> UpsertRelationshipAsync(System.Guid relationshipId, Relationship body)
         {
-            return RelationshipsPUTAsync(relationshipId, body, System.Threading.CancellationToken.None);
+            return UpsertRelationshipAsync(relationshipId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -958,7 +857,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The relationship.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Relationship> RelationshipsPUTAsync(System.Guid relationshipId, Relationship body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Relationship> UpsertRelationshipAsync(System.Guid relationshipId, Relationship body, System.Threading.CancellationToken cancellationToken)
         {
             if (relationshipId == null)
                 throw new System.ArgumentNullException("relationshipId");
@@ -1053,9 +952,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="relationshipId">The relationship identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task RelationshipsDELETEAsync(System.Guid relationshipId)
+        public System.Threading.Tasks.Task DeleteRelationshipAsync(System.Guid relationshipId)
         {
-            return RelationshipsDELETEAsync(relationshipId, System.Threading.CancellationToken.None);
+            return DeleteRelationshipAsync(relationshipId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1063,7 +962,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="relationshipId">The relationship identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task RelationshipsDELETEAsync(System.Guid relationshipId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteRelationshipAsync(System.Guid relationshipId, System.Threading.CancellationToken cancellationToken)
         {
             if (relationshipId == null)
                 throw new System.ArgumentNullException("relationshipId");
@@ -1140,9 +1039,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> TwinsGETAsync(int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> GetAllTwinsAsync(int? pageNumber, int? pageSize)
         {
-            return TwinsGETAsync(pageNumber, pageSize, System.Threading.CancellationToken.None);
+            return GetAllTwinsAsync(pageNumber, pageSize, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1151,7 +1050,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> TwinsGETAsync(int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> GetAllTwinsAsync(int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("twins?");
@@ -1238,9 +1137,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The digital twin.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DigitalTwin> TwinsPOSTAsync(DigitalTwin body)
+        public System.Threading.Tasks.Task<DigitalTwin> CreateTwinAsync(DigitalTwin body)
         {
-            return TwinsPOSTAsync(body, System.Threading.CancellationToken.None);
+            return CreateTwinAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1248,7 +1147,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The digital twin.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DigitalTwin> TwinsPOSTAsync(DigitalTwin body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DigitalTwin> CreateTwinAsync(DigitalTwin body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("twins");
@@ -1341,9 +1240,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> ModelAsync(string dtmi, int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> GetTwinsByModelIdAsync(string dtmi, int? pageNumber, int? pageSize)
         {
-            return ModelAsync(dtmi, pageNumber, pageSize, System.Threading.CancellationToken.None);
+            return GetTwinsByModelIdAsync(dtmi, pageNumber, pageSize, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1353,7 +1252,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="pageSize">The page size. Default:100</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> ModelAsync(string dtmi, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DigitalTwinPaginatedResponse> GetTwinsByModelIdAsync(string dtmi, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
             if (dtmi == null)
                 throw new System.ArgumentNullException("dtmi");
@@ -1444,9 +1343,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtid">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DigitalTwin> TwinsGET2Async(System.Guid dtid)
+        public System.Threading.Tasks.Task<DigitalTwin> GetTwinByIdAsync(System.Guid dtid)
         {
-            return TwinsGET2Async(dtid, System.Threading.CancellationToken.None);
+            return GetTwinByIdAsync(dtid, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1454,7 +1353,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtid">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DigitalTwin> TwinsGET2Async(System.Guid dtid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DigitalTwin> GetTwinByIdAsync(System.Guid dtid, System.Threading.CancellationToken cancellationToken)
         {
             if (dtid == null)
                 throw new System.ArgumentNullException("dtid");
@@ -1547,9 +1446,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The digital twin.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<DigitalTwin> TwinsPUTAsync(System.Guid dtid, DigitalTwin body)
+        public System.Threading.Tasks.Task<DigitalTwin> UpsertTwinAsync(System.Guid dtid, DigitalTwin body)
         {
-            return TwinsPUTAsync(dtid, body, System.Threading.CancellationToken.None);
+            return UpsertTwinAsync(dtid, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1558,7 +1457,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="body">The digital twin.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<DigitalTwin> TwinsPUTAsync(System.Guid dtid, DigitalTwin body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DigitalTwin> UpsertTwinAsync(System.Guid dtid, DigitalTwin body, System.Threading.CancellationToken cancellationToken)
         {
             if (dtid == null)
                 throw new System.ArgumentNullException("dtid");
@@ -1653,9 +1552,9 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtid">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task TwinsDELETEAsync(System.Guid dtid)
+        public System.Threading.Tasks.Task DeleteTwinAsync(System.Guid dtid)
         {
-            return TwinsDELETEAsync(dtid, System.Threading.CancellationToken.None);
+            return DeleteTwinAsync(dtid, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1663,7 +1562,7 @@ namespace Tributech.Dsk.Api.Clients.TwinApi
         /// <param name="dtid">The digital twin identifier.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task TwinsDELETEAsync(System.Guid dtid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteTwinAsync(System.Guid dtid, System.Threading.CancellationToken cancellationToken)
         {
             if (dtid == null)
                 throw new System.ArgumentNullException("dtid");
