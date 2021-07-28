@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <PackageId>Tributech.Dsk.CatalogApi.Client</PackageId>
+    <Version>1.9.0-rc2</Version>
+
+    <Title>Tributech Catalog API Client</Title>
+    <Authors>Tributech Solutions GmbH</Authors>
+    <Company>Tributech Solutions GmbH</Company>
+
+    <PackageTags>Data; Audit; Data Sharing; Tributech; DSK; Data Space Kit; IoT; Digital Twin; DTDL; Linked Data; JSON-LD;</PackageTags>
+
+    <PackageDescription>
+		This is the client library for the Catalog API of the Tributech DataSpace Kit (DSK). For more information go to the documentation (https://docs.tributech.io/) or view the repository on GitHub (https://github.com/tributech-solutions/tributech-catalog-api-client).
+	</PackageDescription>
+
+    <ProjectUrl>https://docs.tributech.io/</ProjectUrl>
+    <RepositoryUrl>https://github.com/tributech-solutions/tributech-catalog-api-client</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>
