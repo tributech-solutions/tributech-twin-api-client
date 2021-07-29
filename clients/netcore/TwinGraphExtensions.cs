@@ -23,22 +23,6 @@ namespace Tributech.Dsk.TwinApi.Client {
 		}
 
 		/// <summary>
-		/// Get all twins that are connected to the passed twins via a relationship.
-		/// </summary>
-		/// <param name="graph"></param>
-		/// <param name="twin"></param>
-		/// <returns></returns>
-		public static IEnumerable<DigitalTwin> GetRelatedTwins(this TwinGraph graph, DigitalTwin twin) {
-			var relationships = graph.GetRelationshipsForTwin(twin);
-
-			List<DigitalTwin> relatedTwins = new();
-			foreach (var relationship in relationships)
-				relatedTwins.Add(graph.GetTwinWithDtId(relationship.TargetId));
-
-			return relatedTwins;
-		}
-
-		/// <summary>
 		/// Get all relationships for the passed twin.
 		/// </summary>
 		/// <param name="graph"></param>
