@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tributech.Dsk.Api.Clients.TwinApi {
+namespace Tributech.Dsk.TwinApi.Client {
 
 	public class RelatedTwins {
 		public DigitalTwin Source { get; set; }
