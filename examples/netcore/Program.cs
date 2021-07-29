@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Tributech.Dsk.Api.Clients;
-using Tributech.Dsk.Api.Clients.TwinApi;
+using Tributech.Dsk.TwinApi.Client;
 
-namespace Tributech.Dataspace.ClientExamples {
+namespace Tributech.Dataspace.ClientExamples
+{
     class Program {
         // Api Client Configs:
 
