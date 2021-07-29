@@ -18,7 +18,7 @@ Essentially, you will need to provide the following parameters:
 | Parameter | Value | Remark |
 |-|-|-|
 | tokenUrl | https://auth.your-hub.dataspace-hub.com/auth/realms/your-node/protocol/openid-connect/token | Url to retrieve the access token from the dataspace hub Keycloak Server |
-| scope | profile / email / twin-api / node-id | Defines the scope of what can be accessed |
+| scope | profile / email / twin-api / catalog-api / node-id | Defines the scope of what can be accessed |
 | clientId | your-api-specific-client-id | Can be found in the Dataspace Admin (Profile -> Administration)
 | clientSecret | your-api-specific-client-secret | Can be found in the Dataspace Admin (Profile -> Administration)
 

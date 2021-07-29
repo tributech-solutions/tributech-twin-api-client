@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Tributech.Dsk.Api.Clients {
+namespace Tributech.Dsk.TwinApi.Client{
 	public class APIAuthHandler: DelegatingHandler {
 		// refresh the token x sec before it actually expires
 		private const int TokenExpiryGracePeriod = 5;

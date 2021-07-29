@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 
-    <PackageId>Tributech.Dsk.Twin.Client</PackageId>
+    <PackageId>Tributech.Dsk.TwinApi.Client</PackageId>
     <Version>1.9.0-rc1</Version>
 
     <Title>Tributech Twin API Client</Title>
