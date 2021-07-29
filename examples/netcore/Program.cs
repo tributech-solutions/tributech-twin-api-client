@@ -26,7 +26,7 @@ namespace Tributech.Dataspace.ClientExamples
                 var apiClient = new TwinApiClient(authorizedHttpClient);
 
                 // Get stored twins
-                var data = await apiClient.GetAllTwinsAsync(0, 100);
+                var data = await apiClient.GetAllTwinsAsync(1, 100);
 
                 foreach (var item in data.Content)
                 {
