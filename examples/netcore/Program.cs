@@ -14,7 +14,7 @@ namespace Tributech.Dataspace.ClientExamples {
         private const string tokenUrl = "https://auth.your-hub.dataspace-hub.com/auth/realms/your-node/protocol/openid-connect/token";
         // the scope setting defines what parts of an api / endpoints should be accessible
         // in this case it is "twin-api" for the Twin API.
-        private const string scope = "profile email twin-api node-id";
+        private const string scope = "profile email twin-api catalog-api node-id";
         // The following two settings can be found in the DataSpace Admin App (Profile -> Administration)
         private const string clientId = "<your-api-specific-client-id>";
         private const string clientSecret = "<your-api-specific-api-client-secret>";
@@ -26,7 +26,7 @@ namespace Tributech.Dataspace.ClientExamples {
                 var apiClient = new TwinApiClient(authorizedHttpClient);
 
                 // Get stored twins
-                var data = await apiClient.TwinsGETAsync(0, 100);
+                var data = await apiClient.GetAllTwinsAsync(0, 100);
 
                 foreach (var item in data.Content)
                 {
