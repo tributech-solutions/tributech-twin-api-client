@@ -3,21 +3,21 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 
-    <PackageId>Tributech.Dsk.CatalogApi.Client</PackageId>
-    <Version>1.9.0-rc2</Version>
+    <PackageId>Tributech.Dsk.Twin.Client</PackageId>
+    <Version>1.9.0-rc1</Version>
 
-    <Title>Tributech Catalog API Client</Title>
+    <Title>Tributech Twin API Client</Title>
     <Authors>Tributech Solutions GmbH</Authors>
     <Company>Tributech Solutions GmbH</Company>
 
-    <PackageTags>Data; Audit; Data Sharing; Tributech; DSK; Data Space Kit; IoT; Digital Twin; DTDL; Linked Data; JSON-LD;</PackageTags>
+    <PackageTags>Data; Audit; Data Sharing; Tributech; DSK; Data Space Kit; IoT; Digital Twin; DTDL; Linked Data;</PackageTags>
 
     <PackageDescription>
-		This is the client library for the Catalog API of the Tributech DataSpace Kit (DSK). For more information go to the documentation (https://docs.tributech.io/) or view the repository on GitHub (https://github.com/tributech-solutions/tributech-catalog-api-client).
+		This is the client library for the Twin API of the Tributech DataSpace Kit (DSK). For more information go to the documentation (https://docs.tributech.io/) or view the repository on GitHub (https://github.com/tributech-solutions/tributech-twin-api-client).
 	</PackageDescription>
 
     <ProjectUrl>https://docs.tributech.io/</ProjectUrl>
-    <RepositoryUrl>https://github.com/tributech-solutions/tributech-catalog-api-client</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tributech-solutions/tributech-twin-api-client</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
