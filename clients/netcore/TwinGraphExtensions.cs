@@ -16,10 +16,10 @@ namespace Tributech.Dsk.TwinApi.Client {
 		/// Get all twins with the specified model ID.
 		/// </summary>
 		/// <param name="graph"></param>
-		/// <param name="mdId"></param>
+		/// <param name="dtmi"></param>
 		/// <returns></returns>
-		public static IEnumerable<DigitalTwin> GetAllTwinsWithModelId(this TwinGraph graph, string mdId) {
-			return graph.DigitalTwins.Where((DigitalTwin twin) => twin.Metadata.Model == mdId);
+		public static IEnumerable<DigitalTwin> GetAllTwinsWithModelId(this TwinGraph graph, string dtmi) {
+			return graph.DigitalTwins.Where((DigitalTwin twin) => twin.Metadata.Model == dtmi);
 		}
 
 		/// <summary>
