@@ -56,17 +56,17 @@ namespace Tributech.Dsk.TwinApi.Client{
 
 			if (DateTime.Now.Ticks > _tokenValidUntil.Ticks) {
 
-				await _refreshTokenLock.WaitAsync(cancellationToken);
+				await _refreshTokenLock.WaitAsync(cancellationToken).ConfigureAwait(false);
 				try {
 					if (DateTime.Now.Ticks > _tokenValidUntil.Ticks) {
-						await RefreshToken(cancellationToken);
+						await RefreshToken(cancellationToken).ConfigureAwait(false);
 					}
 				}
 				finally { _refreshTokenLock.Release(); }
 			}
 
 			request.Headers.Add("Authorization", $"Bearer {_token}");
-			return await base.SendAsync(request, cancellationToken);
+			return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 		}
 
 		private async Task RefreshToken(CancellationToken cancellationToken) {
@@ -81,13 +81,13 @@ namespace Tributech.Dsk.TwinApi.Client{
 			request.Content = postBody;
 			var byteArray = new UTF8Encoding().GetBytes($"{_clientId}:{_clientSecret}");
 			request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-			var response = await base.SendAsync(request, cancellationToken);
+			var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
 			if (response.StatusCode != HttpStatusCode.OK) {
 				throw new Exception("Tributech API Authorization failed");
 			}
 
-			var responseBodyString = await response.Content.ReadAsStringAsync();
+			var responseBodyString = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 			var responseBody = JsonConvert.DeserializeObject<AuthResponse>(responseBodyString);
 
 			_token = responseBody.Access_token;
